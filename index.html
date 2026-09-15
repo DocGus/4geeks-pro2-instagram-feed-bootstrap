@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <!-- Permite utilizar caracteres especiales como á, é, ñ, etc. -->
+    <meta charset="UTF-8">
+
+    <!-- Hace que la página sea responsive y se adapte al ancho del dispositivo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- =========================================================
+         BOOTSTRAP CSS
+         =========================================================
+         
+         Cargamos Bootstrap desde un CDN.
+
+         Bootstrap nos proporciona clases CSS ya preparadas
+         para crear layouts, botones, cards, modales, dropdowns,
+         responsive design, etc.
+    -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- =========================================================
+         BOOTSTRAP ICONS
+         =========================================================
+         
+         Esta librería nos permite utilizar iconos mediante
+         clases como "bi bi-instagram".
+    -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <!-- Título que aparece en la pestaña del navegador -->
+    <title>DocGusGram - Rock Climbing</title>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         NAVBAR
+         =========================================================
+
+         Esta sección representa la barra superior de nuestra
+         aplicación.
+
+         Bootstrap nos ayuda con el layout mediante:
+         - navbar
+         - container
+         - btn
+         - dropdown
+    -->
+    <nav class="navbar bg-body-tertiary">
+
+        <!--
+            "container" centra el contenido y controla su ancho
+            dependiendo del tamaño de pantalla.
+        -->
+        <div class="container">
+
+
+            <!-- =================================================
+                 LOGO / NOMBRE
+                 =================================================
+
+                 navbar-brand identifica el elemento principal
+                 de navegación o marca del sitio.
+            -->
+            <a class="navbar-brand" href="#">
+
+                <!--
+                    Icono de Instagram proporcionado por
+                    Bootstrap Icons.
+
+                    "me-2" significa margin-end: agrega espacio
+                    a la derecha del icono.
+                -->
+                <i class="bi bi-instagram me-2"></i>
+
+                DocGusGram
+
+            </a>
+
+
+            <!-- Contenedor de los botones de la parte derecha -->
+            <div>
+
+
+                <!-- =================================================
+                     CREATE NEW POST
+                     =================================================
+
+                     Este botón NO necesita JavaScript propio.
+
+                     Bootstrap detecta estos atributos:
+
+                     data-bs-toggle="modal"
+                     → indica que queremos abrir un modal.
+
+                     data-bs-target="#newPostModal"
+                     → indica qué modal queremos abrir.
+
+                     El "#" significa que estamos buscando un
+                     elemento por su ID.
+                -->
+                <button
+                    class="btn btn-success"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#newPostModal">
+
+                    Create a new post
+
+                </button>
+
+
+                <!-- =================================================
+                     DROPDOWN
+                     =================================================
+
+                     "dropdown" es un componente de Bootstrap que
+                     permite mostrar un menú cuando hacemos click
+                     en un botón.
+                -->
+                <div class="dropdown d-inline-block">
+
+
+                    <!--
+                        dropdown-toggle indica que este botón
+                        controla un menú desplegable.
+
+                        data-bs-toggle="dropdown"
+                        le indica a Bootstrap que debe abrir
+                        el dropdown al hacer click.
+                    -->
+                    <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown">
+
+                        ⚙
+
+                    </button>
+
+
+                    <!-- Menú que aparece al hacer click -->
+                    <ul class="dropdown-menu">
+
+
+                        <!-- Cada opción del dropdown es un "li" -->
+                        <li>
+
+                            <a class="dropdown-item" href="#">
+                                Profile
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a class="dropdown-item" href="#">
+                                Accessibility
+                            </a>
+
+                        </li>
+
+
+                        <li>
+
+                            <a class="dropdown-item" href="#">
+                                Privacy and Data
+                            </a>
+
+                        </li>
+
+
+                        <!--
+                            Línea separadora proporcionada
+                            directamente por Bootstrap.
+                        -->
+                        <li>
+
+                            <hr class="dropdown-divider">
+
+                        </li>
+
+
+                        <li>
+
+                            <a class="dropdown-item" href="#">
+                                Log out
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================================================
+         VIEW SELECTOR
+         =========================================================
+
+         Estos botones permiten cambiar entre:
+
+         1. Vista Grid
+         2. Vista de publicaciones individuales
+
+         Aquí sí utilizamos JavaScript porque necesitamos
+         modificar qué contenido está visible.
+    -->
+    <div class="container text-center my-3">
+
+
+        <!--
+            "id" identifica este botón específicamente.
+
+            JavaScript utilizará este ID para encontrarlo
+            posteriormente.
+
+            aria-label proporciona una descripción para
+            tecnologías de asistencia.
+        -->
+        <button
+            id="gridButton"
+            class="btn btn-outline-secondary"
+            type="button"
+            aria-label="Grid view">
+
+            ▦
+
+        </button>
+
+
+        <button
+            id="postButton"
+            class="btn btn-outline-secondary"
+            type="button"
+            aria-label="Single post view">
+
+            ▤
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         GRID VIEW
+         =========================================================
+
+         Esta es la vista donde mostramos las imágenes
+         en una cuadrícula.
+
+         "id="gridView""
+         permite que JavaScript pueda mostrar u ocultar
+         esta sección.
+    -->
+    <div id="gridView" class="container">
+
+
+        <!--
+            "row" crea una fila dentro del sistema Grid
+            de Bootstrap.
+
+            "g-2" agrega separación (gutter) entre las columnas.
+        -->
+        <div class="row g-2">
+
+
+            <!-- =================================================
+                 POST 1
+                 =================================================
+
+                 "col-4" significa que esta columna ocupa
+                 4 de las 12 unidades del Grid de Bootstrap.
+
+                 4 / 12 = 1/3
+
+                 Por eso tenemos 3 imágenes por fila.
+            -->
+            <div class="col-4">
+
+                <!--
+                    "ratio ratio-1x1" mantiene el contenedor
+                    con una proporción cuadrada.
+                -->
+                <div class="ratio ratio-1x1">
+
+
+                    <!--
+                        img-fluid hace que la imagen sea responsive.
+
+                        object-fit-cover hace que la imagen cubra
+                        completamente el espacio disponible.
+                    -->
+                    <img
+                        src="https://images.pexels.com/photos/28146962/pexels-photo-28146962.jpeg"
+                        class="img-fluid object-fit-cover"
+                        alt="Escalador subiendo un acantilado">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- POST 2 -->
+            <div class="col-4">
+
+                <div class="ratio ratio-1x1">
+
+                    <img
+                        src="https://images.pexels.com/photos/6310419/pexels-photo-6310419.jpeg"
+                        class="img-fluid object-fit-cover"
+                        alt="Escalador en una pared de roca">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- POST 3 -->
+            <div class="col-4">
+
+                <div class="ratio ratio-1x1">
+
+                    <img
+                        src="https://images.pexels.com/photos/15966492/pexels-photo-15966492.jpeg"
+                        class="img-fluid object-fit-cover"
+                        alt="Escalador ascendiendo una pared">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- POST 4 -->
+            <div class="col-4">
+
+                <div class="ratio ratio-1x1">
+
+                    <img
+                        src="https://images.pexels.com/photos/18348377/pexels-photo-18348377.jpeg"
+                        class="img-fluid object-fit-cover"
+                        alt="Escalador con equipo de seguridad">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- POST 5 -->
+            <div class="col-4">
+
+                <div class="ratio ratio-1x1">
+
+                    <img
+                        src="https://images.pexels.com/photos/35405197/pexels-photo-35405197.jpeg"
+                        class="img-fluid object-fit-cover"
+                        alt="Escalador en una pared rocosa">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- POST 6 -->
+            <div class="col-4">
+
+                <div class="ratio ratio-1x1">
+
+                    <img
+                        src="https://images.pexels.com/photos/303040/pexels-photo-303040.jpeg"
+                        class="img-fluid object-fit-cover"
+                        alt="Escalador en una montaña">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         SINGLE POST VIEW
+         =========================================================
+
+         Esta sección contiene las publicaciones una debajo
+         de otra.
+
+         "d-none" es una clase de Bootstrap que significa:
+
+         display: none;
+
+         Por eso esta vista comienza oculta.
+
+         JavaScript quitará "d-none" cuando el usuario
+         presione el botón de Single Post.
+    -->
+    <div id="postView" class="container d-none">
+
+
+        <!--
+            "justify-content-center" centra horizontalmente
+            la columna dentro de la fila.
+        -->
+        <div class="row justify-content-center">
+
+
+            <!--
+                Responsive:
+
+                col-12
+                → ocupa todo el ancho en pantallas pequeñas.
+
+                col-md-8
+                → ocupa 8/12 desde tamaño medium.
+
+                col-lg-6
+                → ocupa 6/12 desde tamaño large.
+
+                Esto permite que las publicaciones se adapten
+                al tamaño de pantalla.
+            -->
+            <div class="col-12 col-md-8 col-lg-6">
+
+
+
+                <!-- =================================================
+                     POST 1
+                     ================================================= -->
+                <div class="card mb-4">
+
+
+                    <!--
+                        card-header es la cabecera de una Card
+                        de Bootstrap.
+
+                        d-flex
+                        → convierte el contenido en Flexbox.
+
+                        justify-content-between
+                        → coloca el título a la izquierda
+                          y la fecha a la derecha.
+                    -->
+                    <div class="card-header d-flex justify-content-between">
+
+                        <strong>First climb</strong>
+
+                        <span>12/09/2026</span>
+
+                    </div>
+
+
+                    <!-- Imagen principal de la publicación -->
+                    <img
+                        src="https://images.pexels.com/photos/28146962/pexels-photo-28146962.jpeg"
+                        class="card-img-top"
+                        alt="Escalador subiendo un acantilado">
+
+
+                    <!-- Contenido de la publicación -->
+                    <div class="card-body">
+
+                        <strong>120 likes</strong>
+
+                        <p class="card-text">
+                            First climbing session of the season.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- POST 2 -->
+                <div class="card mb-4">
+
+                    <div class="card-header d-flex justify-content-between">
+
+                        <strong>Climbing day</strong>
+
+                        <span>13/09/2026</span>
+
+                    </div>
+
+                    <img
+                        src="https://images.pexels.com/photos/6310419/pexels-photo-6310419.jpeg"
+                        class="card-img-top"
+                        alt="Escalador en una pared de roca">
+
+                    <div class="card-body">
+
+                        <strong>250 likes</strong>
+
+                        <p class="card-text">
+                            A great day climbing outdoors.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- POST 3 -->
+                <div class="card mb-4">
+
+                    <div class="card-header d-flex justify-content-between">
+
+                        <strong>New route</strong>
+
+                        <span>14/09/2026</span>
+
+                    </div>
+
+                    <img
+                        src="https://images.pexels.com/photos/15966492/pexels-photo-15966492.jpeg"
+                        class="card-img-top"
+                        alt="Escalador ascendiendo una pared">
+
+                    <div class="card-body">
+
+                        <strong>180 likes</strong>
+
+                        <p class="card-text">
+                            Trying a new climbing route.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- POST 4 -->
+                <div class="card mb-4">
+
+                    <div class="card-header d-flex justify-content-between">
+
+                        <strong>Mountain adventure</strong>
+
+                        <span>15/09/2026</span>
+
+                    </div>
+
+                    <img
+                        src="https://images.pexels.com/photos/18348377/pexels-photo-18348377.jpeg"
+                        class="card-img-top"
+                        alt="Escalador con equipo de seguridad">
+
+                    <div class="card-body">
+
+                        <strong>320 likes</strong>
+
+                        <p class="card-text">
+                            Another adventure in the mountains.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- POST 5 -->
+                <div class="card mb-4">
+
+                    <div class="card-header d-flex justify-content-between">
+
+                        <strong>Outdoor climbing</strong>
+
+                        <span>16/09/2026</span>
+
+                    </div>
+
+                    <img
+                        src="https://images.pexels.com/photos/35405197/pexels-photo-35405197.jpeg"
+                        class="card-img-top"
+                        alt="Escalador en una pared rocosa">
+
+                    <div class="card-body">
+
+                        <strong>410 likes</strong>
+
+                        <p class="card-text">
+                            Nothing better than climbing outdoors.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- POST 6 -->
+                <div class="card mb-4">
+
+                    <div class="card-header d-flex justify-content-between">
+
+                        <strong>Keep climbing</strong>
+
+                        <span>17/09/2026</span>
+
+                    </div>
+
+                    <img
+                        src="https://images.pexels.com/photos/303040/pexels-photo-303040.jpeg"
+                        class="card-img-top"
+                        alt="Escalador en una montaña">
+
+                    <div class="card-body">
+
+                        <strong>500 likes</strong>
+
+                        <p class="card-text">
+                            Keep climbing and keep improving.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         NEW POST MODAL
+         =========================================================
+
+         Bootstrap Modal:
+
+         El modal es una ventana que aparece sobre el contenido
+         principal.
+
+         Este modal es abierto por el botón "Create a new post".
+    -->
+    <div
+        class="modal fade"
+        id="newPostModal"
+        tabindex="-1"
+        aria-labelledby="newPostModalLabel"
+        aria-hidden="true">
+
+
+        <!-- Contenedor del modal -->
+        <div class="modal-dialog">
+
+
+            <!-- Contenido visual del modal -->
+            <div class="modal-content">
+
+
+                <!-- =================================================
+                     MODAL HEADER
+                     ================================================= -->
+                <div class="modal-header">
+
+
+                    <!--
+                        Este ID es utilizado por aria-labelledby
+                        para relacionar el título con el modal.
+                    -->
+                    <h5
+                        class="modal-title"
+                        id="newPostModalLabel">
+
+                        Create a new post
+
+                    </h5>
+
+
+                    <!--
+                        btn-close es el botón X de Bootstrap.
+
+                        data-bs-dismiss="modal"
+                        indica que este botón debe cerrar
+                        el modal.
+                    -->
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     MODAL BODY
+                     ================================================= -->
+                <div class="modal-body">
+
+
+                    <!--
+                        "for="caption"" conecta este label
+                        con el textarea cuyo ID es "caption".
+
+                        Esto mejora la accesibilidad.
+                    -->
+                    <label
+                        for="caption"
+                        class="form-label">
+
+                        Caption
+
+                    </label>
+
+
+                    <!--
+                        textarea permite introducir texto
+                        en varias líneas.
+
+                        form-control es una clase de Bootstrap
+                        que aplica estilos al campo.
+                    -->
+                    <textarea
+                        id="caption"
+                        class="form-control"
+                        rows="4"
+                        placeholder="Write your caption here...">
+                    </textarea>
+
+
+
+                    <!--
+                        mt-3 significa margin-top nivel 3
+                        según la escala de Bootstrap.
+                    -->
+                    <div class="mt-3">
+
+
+                        <!-- Botón visual para representar cámara -->
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary">
+
+                            📷
+
+                        </button>
+
+
+                        <!-- Botón visual para representar ubicación -->
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary">
+
+                            📍
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     MODAL FOOTER
+                     ================================================= -->
+                <div class="modal-footer">
+
+
+                    <!--
+                        Este botón cierra el modal utilizando
+                        el JavaScript interno de Bootstrap.
+                    -->
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Close
+
+                    </button>
+
+
+                    <!--
+                        Por ahora Publish es solamente visual.
+
+                        El ejercicio no necesita que creemos
+                        una base de datos ni que guardemos
+                        realmente una publicación.
+                    -->
+                    <button
+                        type="button"
+                        class="btn btn-primary">
+
+                        Publish
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         BOOTSTRAP JAVASCRIPT
+         =========================================================
+
+         Cargamos el JavaScript de Bootstrap.
+
+         "bundle" incluye también las dependencias necesarias
+         como Popper.
+
+         Esto permite que componentes como:
+
+         - Dropdown
+         - Modal
+
+         puedan funcionar.
+    -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+
+    <!-- =========================================================
+         NUESTRO JAVASCRIPT
+         =========================================================
+
+         Aquí escribimos JavaScript propio.
+
+         Bootstrap maneja automáticamente el Dropdown y el Modal.
+
+         Pero el cambio entre Grid y Single Post es una
+         funcionalidad que nosotros implementamos.
+    -->
+    <script>
+
+
+        // =========================================================
+        // OBTENER ELEMENTOS DEL HTML
+        // =========================================================
+
+        /*
+            document.getElementById()
+
+            Busca dentro del documento HTML un elemento que
+            tenga el ID indicado.
+
+            Guardamos cada elemento dentro de una constante
+            para poder trabajar con él posteriormente.
+        */
+
+        const gridButton = document.getElementById("gridButton");
+
+        const postButton = document.getElementById("postButton");
+
+        const gridView = document.getElementById("gridView");
+
+        const postView = document.getElementById("postView");
+
+
+
+        // =========================================================
+        // CAMBIAR A GRID VIEW
+        // =========================================================
+
+        /*
+            addEventListener()
+
+            Le dice al navegador:
+
+            "Cuando ocurra este evento, ejecuta esta función."
+
+            En este caso:
+
+            "Cuando hagan click en gridButton,
+             ejecuta esta función."
+        */
+        gridButton.addEventListener("click", function () {
+
+
+            /*
+                classList.remove()
+
+                Elimina una clase CSS del elemento.
+
+                Quitamos "d-none" de gridView.
+
+                Como "d-none" significa display:none,
+                la vista Grid vuelve a ser visible.
+            */
+            gridView.classList.remove("d-none");
+
+
+            /*
+                Ocultamos la vista de publicaciones individuales
+                agregando la clase "d-none".
+            */
+            postView.classList.add("d-none");
+
+        });
+
+
+
+        // =========================================================
+        // CAMBIAR A SINGLE POST VIEW
+        // =========================================================
+
+        /*
+            Cuando el usuario hace click en postButton:
+
+            1. Ocultamos Grid.
+            2. Mostramos Single Post.
+        */
+        postButton.addEventListener("click", function () {
+
+
+            // Oculta la vista Grid.
+            gridView.classList.add("d-none");
+
+
+            /*
+                Muestra la vista Single Post eliminando
+                la clase que la mantenía oculta.
+            */
+            postView.classList.remove("d-none");
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>
